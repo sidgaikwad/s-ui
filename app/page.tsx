@@ -29,17 +29,24 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredLibraries = useMemo(() => {
-    return libraries.filter((lib) => {
-      const matchesSearch =
-        lib.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        lib.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesFramework =
-        selectedFramework === "All" || lib.framework === selectedFramework;
-      const matchesCategory =
-        selectedCategory === "All" || lib.category.includes(selectedCategory);
+    return libraries.filter(
+      (lib: {
+        name: string;
+        description: string;
+        framework: string;
+        category: string | string[];
+      }) => {
+        const matchesSearch =
+          lib.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          lib.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesFramework =
+          selectedFramework === "All" || lib.framework === selectedFramework;
+        const matchesCategory =
+          selectedCategory === "All" || lib.category.includes(selectedCategory);
 
-      return matchesSearch && matchesFramework && matchesCategory;
-    });
+        return matchesSearch && matchesFramework && matchesCategory;
+      }
+    );
   }, [searchQuery, selectedFramework, selectedCategory]);
 
   return (
